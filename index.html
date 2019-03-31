@@ -305,6 +305,277 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="/2019/03/31/第二章笔记-Numpy入门和实战/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="不二码匠">
+      <meta itemprop="description" content="捣鼓的码库">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不二码匠2019">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/31/第二章笔记-Numpy入门和实战/" class="post-title-link" itemprop="/index.html">第二章笔记(Numpy入门和实战)</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-31 22:31:48 / 修改时间：22:46:33" itemprop="dateCreated datePublished" datetime="2019-03-31T22:31:48+08:00">2019-03-31</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/从零开始学Python数据分析/" itemprop="url" rel="index"><span itemprop="name">从零开始学Python数据分析</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一、Numpy"><a href="#一、Numpy" class="headerlink" title="一、Numpy"></a>一、Numpy</h1><p>官方网站：</p>
+<p><a href="http://www.numpy.org/" target="_blank" rel="noopener">http://www.numpy.org/</a></p>
+<p>快速教程：</p>
+<p><a href="https://www.numpy.org/devdocs/user/quickstart.html" target="_blank" rel="noopener">https://www.numpy.org/devdocs/user/quickstart.html</a></p>
+<h2 id="一-Numpy是什么"><a href="#一-Numpy是什么" class="headerlink" title="(一)Numpy是什么"></a>(一)Numpy是什么</h2><p>一个用Python实现的科学计算，包括：</p>
+<p>1、一个强大的N维数组对象Array；</p>
+<p>2、比较成熟的（广播）函数库；</p>
+<p>3、用于整合C/C++和Fortran代码的工具包；</p>
+<p>4、实用的线性代数、傅里叶变换和随机数生成函数。</p>
+<p>numpy和稀疏矩阵运算包scipy配合使用更加方便。</p>
+<p>NumPy（Numeric Python）提供了许多高级的数值编程工具，如：矩阵数据类型、矢量处理，以及精密的运算库。专为进行严格的数字处理而产生。多为很多大型金融公司使用，以及核心的科学计算组织如：Lawrence Livermore，NASA用其处理一些本来使用C++，Fortran或Matlab等所做的任务。</p>
+<h2 id="二-ndarray"><a href="#二-ndarray" class="headerlink" title="(二)ndarray"></a>(二)ndarray</h2><p>NumPy提供了一个N维数组类型ndarray，它描述了相同类型的“items”的集合。<br>ndarray到底跟原生python列表的区别：</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcrj6oklj30wu0ijgs8.jpg" alt=""></p>
+<p>从图中我们可以看出ndarray在存储数据的时候，数据与数据的地址都是连续的，这样就给使得批量操作数组元素时速度更快。<br>这是因为ndarray中的所有元素的类型都是相同的，而Python列表中的元素类型是任意的，所以ndarray在存储元素时内存可以连续，而python原生list就只能通过寻址方式找到下一个元素，这虽然也导致了在通用性能方面Numpy的ndarray不及Python原生list，但在科学计算中，Numpy的ndarray就可以省掉很多循环语句，代码使用方面比Python原生list简单的多。<br>numpy内置了并行运算功能，当系统有多个核心时，做某种计算时，numpy会自动做并行计算。<br>Numpy底层使用C语言编写，内部解除了GIL（全局解释器锁），其对数组的操作速度不受Python解释器的限制，效率远高于纯Python代码。</p>
+<h2 id="三-ndarray结构"><a href="#三-ndarray结构" class="headerlink" title="(三)ndarray结构"></a>(三)ndarray结构</h2><p>NumPy 最重要的一个特点是其 N 维数组对象 ndarray，它是一系列同类型数据的集合，以 0 下标为开始进行集合中元素的索引。</p>
+<p>ndarray 对象是用于存放同类型元素的多维数组。</p>
+<p>ndarray 中的每个元素在内存中都有相同存储大小的区域。</p>
+<p>ndarray 内部由以下内容组成：</p>
+<ul>
+<li>一个指向数据（内存或内存映射文件中的一块数据）的指针。</li>
+<li>数据类型或 dtype，描述在数组中的固定大小值的格子。</li>
+<li>一个表示数组形状（shape）的元组，表示各维度大小的元组。</li>
+<li>一个跨度元组（stride），其中的整数指的是为了前进到当前维度下一个元素需要”跨过”的字节数。</li>
+</ul>
+<p>ndarray 的内部结构:</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcs914xtj30k7076t9b.jpg" alt=""></p>
+<p>跨度可以是负数，这样会使数组在内存中后向移动，切片中 <strong>obj[::-1]</strong> 或 <strong>obj[:,::-1]</strong> 就是如此。</p>
+<h2 id="四-参考教程"><a href="#四-参考教程" class="headerlink" title="(四) 参考教程"></a>(四) 参考教程</h2><p><a href="http://www.runoob.com/numpy/numpy-dtype.html" target="_blank" rel="noopener">http://www.runoob.com/numpy/numpy-dtype.html</a></p>
+<p><a href="https://blog.csdn.net/a373595475/article/details/79580734" target="_blank" rel="noopener">https://blog.csdn.net/a373595475/article/details/79580734</a></p>
+<h1 id="二、ndarray多维数组"><a href="#二、ndarray多维数组" class="headerlink" title="二、ndarray多维数组"></a>二、ndarray多维数组</h1><h2 id="一-创建"><a href="#一-创建" class="headerlink" title="(一)创建"></a>(一)创建</h2><p>创建一个 ndarray 只需调用 NumPy 的 array 函数即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numpy.array(object, dtype = None, copy = True, order = None, subok = False, ndmin = 0)</span><br></pre></td></tr></table></figure>
+<p>对于多维数组的创建，使用嵌套序列数据即可完成。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcsrnl8pj30ej0j9aa3.jpg" alt=""></p>
+<p>​    另外，使用其他函数也能创建一些特殊的数组，zeros，ones，empty，arange，ones_like</p>
+<p>​    <img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mct7m68dj30cu0l90sr.jpg" alt=""></p>
+<h2 id="二-对象属性"><a href="#二-对象属性" class="headerlink" title="(二)对象属性"></a>(二)对象属性</h2><p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mctmynckj30ke0ax74s.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mctw8vw1j30br0iimx5.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcu7pwa2j30b40780sk.jpg" alt=""></p>
+<h2 id="三-数据类型"><a href="#三-数据类型" class="headerlink" title="(三)数据类型"></a>(三)数据类型</h2><p>numpy 支持的数据类型比 Python 内置的类型要多很多，基本上可以和 C 语言的数据类型对应上，其中部分类型对应为 Python 内置的类型。下表列举了常用 NumPy 基本类型。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcuh7nlxj30ng0ngwfz.jpg" alt=""></p>
+<h2 id="四-数组变换"><a href="#四-数组变换" class="headerlink" title="(四)数组变换"></a>(四)数组变换</h2><p><a href="https://www.jb51.net/article/144961.htm" target="_blank" rel="noopener">https://www.jb51.net/article/144961.htm</a></p>
+<p><a href="http://www.runoob.com/numpy/numpy-array-manipulation.html" target="_blank" rel="noopener">http://www.runoob.com/numpy/numpy-array-manipulation.html</a></p>
+<p>reshape 不改变数据的条件下修改形状</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcutsf61j30b70cmt8m.jpg" alt=""></p>
+<p>ravel 返回展开数组</p>
+<p>flatten 返回一份数组拷贝，对拷贝所做的修改不会影响原始数组</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcv3z44pj30c20cf3ye.jpg" alt=""></p>
+<p>concatenate 连接沿现有轴的数组序列</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcvhk6b4j30e70mcmxa.jpg" alt=""></p>
+<p>split 将一个数组分割为多个子数组</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcvytbslj30b3087glg.jpg" alt=""></p>
+<p>transpose 转置可以对数组进行重置，返回的是源数据的视图（不会进行任何复制操作）</p>
+<p>swapaxes 对换数组的两个轴</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcwc6zykj30ct0ks74b.jpg" alt=""></p>
+<h2 id="五-随机函数"><a href="#五-随机函数" class="headerlink" title="(五)随机函数"></a>(五)随机函数</h2><p><a href="https://blog.csdn.net/jinxiaonian11/article/details/53143141" target="_blank" rel="noopener">https://blog.csdn.net/jinxiaonian11/article/details/53143141</a></p>
+<p>在数据分析中，数据的获取是第一步，numpy.random 模块提供了非常全的自动产生数据API，是学习数据分析的第一步。<br>总体来说，numpy.random模块分为四个部分，对应四种功能： </p>
+<ol>
+<li>简单随机数： 产生简单的随机数据，可以是任何维度 </li>
+<li>排列：将所给对象随机排列 </li>
+<li>分布：产生指定分布的数据，如高斯分布等 </li>
+<li>生成器：种随机数种子，根据同一种子产生的随机数是相同的 </li>
+</ol>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcwob6xdj30ql0cjdgl.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcwxu4mgj30ic0e53yk.jpg" alt=""></p>
+<p>permutaion,shuffle</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcxbju0ij30r303dmx7.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcxm58tbj30ds0hxdfv.jpg" alt=""></p>
+<h1 id="三、数组的索引和切片"><a href="#三、数组的索引和切片" class="headerlink" title="三、数组的索引和切片"></a>三、数组的索引和切片</h1><p><a href="http://www.runoob.com/numpy/numpy-ndexing-and-slicing.html" target="_blank" rel="noopener">http://www.runoob.com/numpy/numpy-ndexing-and-slicing.html</a> </p>
+<p><a href="http://www.runoob.com/numpy/numpy-advanced-indexing.html" target="_blank" rel="noopener">http://www.runoob.com/numpy/numpy-advanced-indexing.html</a></p>
+<p><a href="https://www.cnblogs.com/woaixuexi9999/p/9230205.html" target="_blank" rel="noopener">https://www.cnblogs.com/woaixuexi9999/p/9230205.html</a></p>
+<h2 id="一-索引"><a href="#一-索引" class="headerlink" title="(一)索引"></a>(一)索引</h2><p>ndarray对象的内容可以通过索引或切片来访问和修改，与 Python 中 list 的切片操作一样。</p>
+<p>ndarray 数组可以基于 0 - n 的下标进行索引，切片对象可以通过内置的 slice 函数，并设置 start, stop 及 step 参数进行，从原数组中切割出一个新数组。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcxxuldrj30eo0a8q2t.jpg" alt=""></p>
+<h2 id="二-切片"><a href="#二-切片" class="headerlink" title="(二)切片"></a>(二)切片</h2><p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcy7u5mxj30hl0643yp.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcyi3t3dj30cu0jxq2y.jpg" alt=""></p>
+<h2 id="三-布尔型索引"><a href="#三-布尔型索引" class="headerlink" title="(三)布尔型索引"></a>(三)布尔型索引</h2><p>bool型数组可以用于数组索引，前提是bool型数组的长度和被索引数组的高维维度一致</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcyrr8bgj30j30f074a.jpg" alt=""></p>
+<h2 id="四-花式索引"><a href="#四-花式索引" class="headerlink" title="(四)花式索引"></a>(四)花式索引</h2><p>花式索引指的是利用整数数组进行索引。</p>
+<p>花式索引根据索引数组的值作为目标数组的某个轴的下标来取值。对于使用一维整型数组作为索引，如果目标是一维数组，那么索引的结果就是对应位置的元素；如果目标是二维数组，那么就是对应下标的行。</p>
+<p>花式索引跟切片不一样，它总是将数据复制到新数组中。</p>
+<p>传入多个索引数组（要使用np.ix_）</p>
+<p><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ix_.html" target="_blank" rel="noopener">https://docs.scipy.org/doc/numpy/reference/generated/numpy.ix_.html</a></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcz0b6laj30cq0cx747.jpg" alt=""></p>
+<p>最后一个x[np.ix_([1,5,7,2],[0,3,1,2])] 代表</p>
+<p>取x中的</p>
+<p>第1行0列，3列，1列，2列</p>
+<p>第5行0列，3列，1列，2列</p>
+<p>第7行0列，3列，1列，2列</p>
+<p>第2行0列，3列，1列，2列</p>
+<h1 id="四、数组运算"><a href="#四、数组运算" class="headerlink" title="四、数组运算"></a>四、数组运算</h1><p><a href="https://www.cnblogs.com/luhuan/p/7928407.html" target="_blank" rel="noopener">https://www.cnblogs.com/luhuan/p/7928407.html</a></p>
+<h2 id="一-通用函数"><a href="#一-通用函数" class="headerlink" title="(一)通用函数"></a>(一)通用函数</h2><p>通用函数是一种对数组中的数据执行元素级运算的函数</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mcz91rs5j30e90an749.jpg" alt=""></p>
+<h2 id="二-条件逻辑运算"><a href="#二-条件逻辑运算" class="headerlink" title="(二)条件逻辑运算"></a>(二)条件逻辑运算</h2><p><a href="https://www.cnblogs.com/anner-nie/p/8544203.html" target="_blank" rel="noopener">https://www.cnblogs.com/anner-nie/p/8544203.html</a></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1mczfvacgj30f307vgli.jpg" alt=""></p>
+<h2 id="三-统计运算"><a href="#三-统计运算" class="headerlink" title="(三) 统计运算"></a>(三) 统计运算</h2><p>cumsum</p>
+<p><a href="https://blog.csdn.net/lzh_12345/article/details/79848100" target="_blank" rel="noopener">https://blog.csdn.net/lzh_12345/article/details/79848100</a></p>
+<p>cumsum函数定义：</p>
+<p>cumsum(a, axis=None, dtype=None, out=None)<br>a.cumsum(axis=None, dtype=None, out=None)<br>  返回：沿着指定轴的元素累加和所组成的数组，其形状应与输入数组a一致</p>
+<p>其中cumsum函数的参数：</p>
+<p>a:数组<br>axis:轴索引,整型，若a为n维数组，则axis的取值范围为[0,n-1]<br>dtype:返回结果的数据类型，若不指定，则默认与a一致。<br>out：数据类型为数组。用来放置结果的替代输出数组，它必须具有与输出结果具有相同的形状和缓冲长度</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1md01vx2ij30rn0p940e.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1md0dgro0j30fk08njr9.jpg" alt=""></p>
+<h2 id="四-布尔型数组运算"><a href="#四-布尔型数组运算" class="headerlink" title="(四)布尔型数组运算"></a>(四)布尔型数组运算</h2><p>对于布尔型数组，期布尔值会被强制转化1(True)和0(False)</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1md0n6i4uj30ig069t8l.jpg" alt=""></p>
+<h2 id="五-排序"><a href="#五-排序" class="headerlink" title="(五)排序"></a>(五)排序</h2><p>通过sort方法排序，多维数组，通过指定轴方向</p>
+<p><a href="https://blog.csdn.net/Haiyang_Duan/article/details/79221458" target="_blank" rel="noopener">https://blog.csdn.net/Haiyang_Duan/article/details/79221458</a></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1md0vr8z4j30e908t3yg.jpg" alt=""></p>
+<h2 id="六-集合运算"><a href="#六-集合运算" class="headerlink" title="(六)集合运算"></a>(六)集合运算</h2><p><a href="https://blog.csdn.net/tcy23456/article/details/83958753" target="_blank" rel="noopener">https://blog.csdn.net/tcy23456/article/details/83958753</a></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1md15r80oj30j008b3yu.jpg" alt=""></p>
+<h2 id="七-集合运算"><a href="#七-集合运算" class="headerlink" title="(七)集合运算"></a>(七)集合运算</h2><p>numpy.linalg模块包含线性代数的函数。使用这个模块，可以计算逆矩阵、求特征值、解线性方程组以及求解行列式等。</p>
+<h1 id="五、数组的存储"><a href="#五、数组的存储" class="headerlink" title="五、数组的存储"></a>五、数组的存储</h1><p>np.savetext和loadtext完成存和取</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g1md1cntguj30hp0dtq2w.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="/2019/03/24/第一章笔记-Python环境搭建与使用-Jupyter-Notebook/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -963,7 +1234,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
