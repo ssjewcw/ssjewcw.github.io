@@ -305,6 +305,225 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="/2019/04/20/第三章笔记-pandas入门和实战-pandas可视化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="不二码匠">
+      <meta itemprop="description" content="捣鼓的码库">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不二码匠">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/20/第三章笔记-pandas入门和实战-pandas可视化/" class="post-title-link" itemprop="/index.html">第三章笔记(pandas入门和实战)-pandas可视化</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-20 09:46:17 / 修改时间：09:53:11" itemprop="dateCreated datePublished" datetime="2019-04-20T09:46:17+08:00">2019-04-20</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/从零开始学Python数据分析/" itemprop="url" rel="index"><span itemprop="name">从零开始学Python数据分析</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一、pandas可视化"><a href="#一、pandas可视化" class="headerlink" title="一、pandas可视化"></a>一、pandas可视化</h1><h2 id="一-线形图"><a href="#一-线形图" class="headerlink" title="(一) 线形图"></a>(一) 线形图</h2><p>线形图通常用于描绘两组数据之间的趋势，</p>
+<p>例如销售行中月份与销量之间的趋势，金融行中股票收盘价与时间序列之间的走势</p>
+<p>Series和DataFrame都有绘制各类图表的plot方法，默认就是线形图</p>
+<ul>
+<li>Python关于%matplotlib inline  </li>
+</ul>
+<p><a href="https://www.jianshu.com/p/2dda5bb8ce7d" target="_blank" rel="noopener">https://www.jianshu.com/p/2dda5bb8ce7d</a></p>
+<p>我在做一个比赛需要使用到LSTM模型对时间序列进行预测，然后在github代码中经常会看到这样的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import numpy</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">from pandas import read_csv</span><br><span class="line">import math</span><br><span class="line">from keras.models import Sequential</span><br><span class="line">from keras.layers import Dense</span><br><span class="line">from keras.layers import LSTM</span><br><span class="line">from sklearn.preprocessing import MinMaxScaler</span><br><span class="line">from sklearn.metrics import mean_squared_error</span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+<p>其中最后一句%matplotlib inline比较奇怪，而且无论你是用哪个python的IDE如spyder或者pycharm,这个地方都会报错，显示是invalid syntax（无效语法）。那为什么代码里面还是会有这一句呢？原来是这样的。<br> <strong>%matplotlib作用</strong></p>
+<ol>
+<li>是在使用jupyter notebook 或者 jupyter qtconsole的时候，才会经常用到%matplotlib，也就是说那一份代码可能就是别人使用jupyter notebook 或者 jupyter qtconsole进行编辑的。关于jupyter notebook是什么，可以参考这个链接：[Jupyter Notebook介绍、安装及使用教程][1]</li>
+<li>而%matplotlib具体作用是当你调用matplotlib.pyplot的绘图函数plot()进行绘图的时候，或者生成一个figure画布的时候，可以直接在你的python console里面生成图像。</li>
+</ol>
+<p>而我们在spyder或者pycharm实际运行代码的时候，可以直接注释掉这一句，也是可以运行成功的。如下示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fig = plt.figure(facecolor=&apos;white&apos;)</span><br><span class="line">ax = fig.add_subplot(111)</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28uyzhixzj30cn0asmy0.jpg" alt=""></p>
+<p>plot运行截图</p>
+<p>如图所示，生成了一个带坐标轴的figure对象，并且画布颜色是白色的。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28uzi3lusj30g60kbaaf.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28uzt5ck0j30fg0b4mxi.jpg" alt=""></p>
+<h2 id="二-柱状图"><a href="#二-柱状图" class="headerlink" title="(二) 柱状图"></a>(二) 柱状图</h2><p>柱壮图，常用于描绘各类别别之间的关系。</p>
+<p>例如，班级中男生和女生之间的分布情况，某零售店各商品的购买数量分布情况。</p>
+<p>通过pandas绘制柱状图很简单，只需要在plot函数中加入kind=’bar’，如果类别较多，可绘制水平柱状图kind=’barh’</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v09zi2cj30gd0kh74l.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v0l65zpj30g20ghaa6.jpg" alt=""></p>
+<p>​    设置plot函数的stacked参数，可以绘制堆积柱状图，alpha可以设置颜色透明度</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v0u9rhaj30ga09o3yg.jpg" alt=""></p>
+<h2 id="三-直方图和密度图"><a href="#三-直方图和密度图" class="headerlink" title="(三) 直方图和密度图"></a>(三) 直方图和密度图</h2><p>直方图用于频率分布，y轴可为数值或者比率，直方图在统计分析中是经常使用的。</p>
+<p>绘制数据的直方图，可以看出其大概分布规律，例如，某班级的身高情况一般是服从正态分布，即高个子和矮个子的人较少，大部分都是在平均身高左右。</p>
+<p>可通过hist方法绘制直方图，设置grid参数即可在图表中添加网格，bins参数是将值分为多少段，默认是10</p>
+<p>核密度估计(Kernel Density Estimate)是对真实密度的估计，其过程是将数据的分布近似为一组核（如正态分布）。通过plot函数的kind=’kde’可进行绘制。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v1270ddj30gq0j93ys.jpg" alt=""></p>
+<h2 id="四-散点图"><a href="#四-散点图" class="headerlink" title="(四) 散点图"></a>(四) 散点图</h2><p>散点图主要用来表现数据之间的规律。例如，身高和体重之间的规律。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v1aru9fj30gn0kct8x.jpg" alt=""></p>
+<h1 id="二、小费数据集"><a href="#二、小费数据集" class="headerlink" title="二、小费数据集"></a>二、小费数据集</h1><p>数据分析的流程，通常分为5步。</p>
+<p>(1) 收集数据。在这一步中，需要对收集的数据有一定的认知，对各字段的含义和背景知识都要有着足够的理解。</p>
+<p>(2) 定义问题。根据各自的行业和业务知识，对数据定义多个待解决的问题。</p>
+<p>(3) 数据清洗与整理。由于各种问题，获取的数据不够干净，需要通过各种手段对数据进行清洗与整理，以便得到准确的分析结果。</p>
+<p>(4) 数据探索。通过可视化等手段，对数据进行分析和探索，得出结论。</p>
+<p>(5) 数据展示。 这部分用于输出，或撰写数据分析报告，或汇报给上级，或绘制PPT。</p>
+<h2 id="一-数据来源"><a href="#一-数据来源" class="headerlink" title="(一) 数据来源"></a>(一) 数据来源</h2><p>小费数据来源于Python第三方库seaborn(用于绘图)中自带的数据，加载该数据集。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v1jxvt7j30f709h0su.jpg" alt=""></p>
+<p>​    head函数返回前5条，也可指定返回数据行数。</p>
+<p>​    众所周知，在西方国家的服务行业中，顾客会给与服务员一定金额的小费。该小费数据为餐饮行业收集的数据，total_bill列为消费总金额，tip列为小费金额，sex为顾客性别，smoker为顾客是否抽烟，day为消费的星期，time为聚餐的时间段，size为聚餐人数。</p>
+<h2 id="二-定义问题"><a href="#二-定义问题" class="headerlink" title="(二) 定义问题"></a>(二) 定义问题</h2><p>本次分析中，围绕小费数据集提出几个问题：</p>
+<p>小费金额与消费总金额是否存在相关性？</p>
+<p>性别，是否吸烟，星期几，中晚餐，聚餐人数和小费金额是否有一定的关联？</p>
+<p>小费金额占消费总金额的百分比服从正态分布？</p>
+<h2 id="三-数据清洗"><a href="#三-数据清洗" class="headerlink" title="(三) 数据清洗"></a>(三) 数据清洗</h2><p>首先对数据进行简单描述，看是否缺失或者异常值</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v1uak5nj30bx0hnq37.jpg" alt=""></p>
+<p>通过统计看出244条数据，但看不出是否有缺失值，通过打印数据的info可以看出每列数据类型和缺失情况。</p>
+<h2 id="四-数据探索"><a href="#四-数据探索" class="headerlink" title="(四) 数据探索"></a>(四) 数据探索</h2><h3 id="1-小费金额和消费总金额"><a href="#1-小费金额和消费总金额" class="headerlink" title="1. 小费金额和消费总金额"></a>1. 小费金额和消费总金额</h3><p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v22wxyvj30fa09zq32.jpg" alt=""></p>
+<p>可以看出小费金额和消费总额存在着正相关的关系，即消费的金额越多，给的小费也就越多，这是比较合理的</p>
+<h3 id="2-小费金额和性别"><a href="#2-小费金额和性别" class="headerlink" title="2. 小费金额和性别"></a>2. 小费金额和性别</h3><p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v2cfo86j30g50ibq31.jpg" alt=""></p>
+<p>可以看出，女性小费金额小于男性小费金额</p>
+<h3 id="3-小费金额和星期几"><a href="#3-小费金额和星期几" class="headerlink" title="3. 小费金额和星期几"></a>3. 小费金额和星期几</h3><p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v2kczlkj30j00jajrk.jpg" alt=""></p>
+<p> 可以看出，星期六，日的小费比周四，周五的高</p>
+<h3 id="4-小费百分比的分布"><a href="#4-小费百分比的分布" class="headerlink" title="4. 小费百分比的分布"></a>4. 小费百分比的分布</h3><p>这里的消费总金额为小费的金额和聚餐所花谓的金额total_bill</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g28v2sym9kj30gh0jpaao.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="/2019/04/14/第三章笔记-pandas入门和实战/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1471,7 +1690,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
