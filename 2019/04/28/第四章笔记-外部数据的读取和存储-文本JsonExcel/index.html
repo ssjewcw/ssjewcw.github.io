@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一、文本数据的读取与存储(一) CSV文件的读取1. csv创建 可以通过type方法查看数据，type适用于Windows，Unix使用!cat 2. csv读取 创建的是标准的csv，可以使用read_csv读取 如果csv路径中有中文，需要加open函数 对于csv，也可以使用read_table读取，指定分隔符即可 但实际中格式并不会如此的规整 3. csv规整(1) 指定列作为索引默认情">
+<meta name="keywords" content="码匠,不二,Python,数据分析,爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四章笔记(外部数据的读取和存储)-文本JsonExcel">
+<meta property="og:url" content="/2019/04/28/第四章笔记-外部数据的读取和存储-文本JsonExcel/index.html">
+<meta property="og:site_name" content="不二码匠">
+<meta property="og:description" content="一、文本数据的读取与存储(一) CSV文件的读取1. csv创建 可以通过type方法查看数据，type适用于Windows，Unix使用!cat 2. csv读取 创建的是标准的csv，可以使用read_csv读取 如果csv路径中有中文，需要加open函数 对于csv，也可以使用read_table读取，指定分隔符即可 但实际中格式并不会如此的规整 3. csv规整(1) 指定列作为索引默认情">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io6yil0gj30gq08u747.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io7a0rb3j30ka0bd0ss.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io7l3rfwj30jx06l0sm.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io7szablj30jv0d8mx8.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io81n4arj30ll0dbt8t.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io8aust6j30i509ljrc.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io8jp3b9j30lk09bq3y.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io8sttvfj30tx0k3q40.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io91821qj30ku0idaaa.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io99kizmj30im0c83yl.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io9ii5wcj30jh08gglk.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io9qm0oaj30gs0gywen.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2ioap3d35j30v00kk74u.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2ioaz78thj30up0iq75j.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2iob7i6ckj30un0c9dgi.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2iobelge6j30h70dldgt.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2iobmwmyaj30lz0cdmx9.jpg">
+<meta property="og:updated_time" content="2019-04-28T13:35:09.018Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第四章笔记(外部数据的读取和存储)-文本JsonExcel">
+<meta name="twitter:description" content="一、文本数据的读取与存储(一) CSV文件的读取1. csv创建 可以通过type方法查看数据，type适用于Windows，Unix使用!cat 2. csv读取 创建的是标准的csv，可以使用read_csv读取 如果csv路径中有中文，需要加open函数 对于csv，也可以使用read_table读取，指定分隔符即可 但实际中格式并不会如此的规整 3. csv规整(1) 指定列作为索引默认情">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/007bNinYgy1g2io6yil0gj30gq08u747.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="/2019/04/28/第四章笔记-外部数据的读取和存储-文本JsonExcel/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>第四章笔记(外部数据的读取和存储)-文本JsonExcel | 不二码匠</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">不二码匠</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">欢迎关注同名微信公众号</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="/2019/04/28/第四章笔记-外部数据的读取和存储-文本JsonExcel/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="不二码匠">
+      <meta itemprop="description" content="捣鼓的码库">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不二码匠">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第四章笔记(外部数据的读取和存储)-文本JsonExcel
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-28 21:28:15 / 修改时间：21:35:09" itemprop="dateCreated datePublished" datetime="2019-04-28T21:28:15+08:00">2019-04-28</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/从零开始学Python数据分析/" itemprop="url" rel="index"><span itemprop="name">从零开始学Python数据分析</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、文本数据的读取与存储"><a href="#一、文本数据的读取与存储" class="headerlink" title="一、文本数据的读取与存储"></a>一、文本数据的读取与存储</h1><h2 id="一-CSV文件的读取"><a href="#一-CSV文件的读取" class="headerlink" title="(一) CSV文件的读取"></a>(一) CSV文件的读取</h2><h3 id="1-csv创建"><a href="#1-csv创建" class="headerlink" title="1. csv创建"></a>1. csv创建</h3><p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io6yil0gj30gq08u747.jpg" alt=""></p>
+<p>可以通过type方法查看数据，type适用于Windows，Unix使用!cat</p>
+<h3 id="2-csv读取"><a href="#2-csv读取" class="headerlink" title="2. csv读取"></a>2. csv读取</h3><p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io7a0rb3j30ka0bd0ss.jpg" alt=""></p>
+<p>创建的是标准的csv，可以使用read_csv读取</p>
+<p>如果csv路径中有中文，需要加open函数</p>
+<p>对于csv，也可以使用read_table读取，指定分隔符即可</p>
+<p>但实际中格式并不会如此的规整</p>
+<h3 id="3-csv规整"><a href="#3-csv规整" class="headerlink" title="3. csv规整"></a>3. csv规整</h3><h4 id="1-指定列作为索引"><a href="#1-指定列作为索引" class="headerlink" title="(1) 指定列作为索引"></a>(1) 指定列作为索引</h4><p>默认情况下，读取的DataFrame行索引是从0开始的计数，可以通过index_col参数指定列为行索引如</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io7l3rfwj30jx06l0sm.jpg" alt=""></p>
+<p>如果希望多个列做成一个层次化索引，传入列编号或者列名组成的列表即可。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io7szablj30jv0d8mx8.jpg" alt=""></p>
+<h4 id="2-标题行设置"><a href="#2-标题行设置" class="headerlink" title="(2)  标题行设置"></a>(2)  标题行设置</h4><p>有些情况下，csv文件没有标题行，使用默认读取，会指定第一行为标题行，这是不符合实际的。</p>
+<p>一种是通过header参数分配默认的标题行，</p>
+<p>一种是通过names参数给其指定列名。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io81n4arj30ll0dbt8t.jpg" alt="">‘’</p>
+<h4 id="3-自定义读取"><a href="#3-自定义读取" class="headerlink" title="(3) 自定义读取"></a>(3) 自定义读取</h4><h5 id="a-跳过一些行"><a href="#a-跳过一些行" class="headerlink" title="a. 跳过一些行"></a>a. 跳过一些行</h5><p>由于数据原因，有时可能只需要选择读取部分行或者列，通过skiprows参数跳过一些行</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io8aust6j30i509ljrc.jpg" alt=""></p>
+<h5 id="b-读取部分行"><a href="#b-读取部分行" class="headerlink" title="b. 读取部分行"></a>b. 读取部分行</h5><p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io8jp3b9j30lk09bq3y.jpg" alt=""></p>
+<p>通过nrows，可以选择只读取部分数据，从0开始</p>
+<p>如果只为了研究部分列数据，通过usecols进行部分列的选择</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io8sttvfj30tx0k3q40.jpg" alt=""></p>
+<h5 id="c-逐块读取"><a href="#c-逐块读取" class="headerlink" title="c. 逐块读取"></a>c. 逐块读取</h5><p>当处理很大文件时候，需要对文件逐块读取，首先通过info查看生还者数据，通过chunksize，即可逐步读取文件，返回的是TextFileReader。通过迭代，可对Sex进行计数。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io91821qj30ku0idaaa.jpg" alt=""></p>
+<h2 id="二-TXT文件的读取"><a href="#二-TXT文件的读取" class="headerlink" title="(二) TXT文件的读取"></a>(二) TXT文件的读取</h2><p>TXT文件使用的分隔符可能并不是逗号，这是创建一个分隔符为?的txt文件</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io99kizmj30im0c83yl.jpg" alt=""></p>
+<p>现实情况中，有些TXT文件并没有固定的分隔符，而用一些数量不定的空白符进行分隔，</p>
+<p>这种情况下，也可以手动处理，但数量大，耗时，可通过表达式来处理。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io9ii5wcj30jh08gglk.jpg" alt=""></p>
+<h2 id="三-文本数据的存储"><a href="#三-文本数据的存储" class="headerlink" title="(三) 文本数据的存储"></a>(三) 文本数据的存储</h2><p>对数据进行处理和分析后，通常会把数据存储起来。</p>
+<p>DataFrame的to_csv，把数据存到以逗号为分隔的csv文件，</p>
+<p>也可以通过sep指定分隔符，这种情况下会存储行和列索引，通过index和header分别处理行和列索引</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2io9qm0oaj30gs0gywen.jpg" alt=""></p>
+<h1 id="二、JSON和Excel数据的读取和存储"><a href="#二、JSON和Excel数据的读取和存储" class="headerlink" title="二、JSON和Excel数据的读取和存储"></a>二、JSON和Excel数据的读取和存储</h1><h2 id="一-JSON数据的读取与存储"><a href="#一-JSON数据的读取与存储" class="headerlink" title="(一) JSON数据的读取与存储"></a>(一) JSON数据的读取与存储</h2><p>JSON(javascript object notation)数据是一种轻量级的数据交换格式，因其简洁和清晰的层次结构，成为理想的数据交换语言。</p>
+<p>官方网站：</p>
+<p><a href="http://www.json.org/" target="_blank" rel="noopener">http://www.json.org/</a></p>
+<h3 id="1-使用json读取"><a href="#1-使用json读取" class="headerlink" title="1. 使用json读取"></a>1. 使用json读取</h3><p>通过python的第三方库json，通过json.loads读取数据，再将数据传入DataFrame构造器，完成JSON数据的读取。</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2ioap3d35j30v00kk74u.jpg" alt=""></p>
+<h3 id="2-使用pandas的read-json"><a href="#2-使用pandas的read-json" class="headerlink" title="2. 使用pandas的read_json"></a>2. 使用pandas的read_json</h3><p>另一种是直接通过pandas的read_json</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2ioaz78thj30up0iq75j.jpg" alt=""></p>
+<h3 id="3-存储"><a href="#3-存储" class="headerlink" title="3. 存储"></a>3. 存储</h3><p>最后使用to_json对DataFrame数据进行存储</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2iob7i6ckj30un0c9dgi.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2iobelge6j30h70dldgt.jpg" alt=""></p>
+<h2 id="二-Excel数据的读取与存储"><a href="#二-Excel数据的读取与存储" class="headerlink" title="(二) Excel数据的读取与存储"></a>(二) Excel数据的读取与存储</h2><p>Excel表格数据也是工作中常用的一种数据，读者应该对其不陌生，可以通过DataFrame的read_excel和to_excel完成存取。</p>
+<p>read_excel读取数据，可通过参数sheetname指定读取的工作簿</p>
+<p>to_excel函数则是将DataFrame存为Excel数据</p>
+<p><img src="https://ws1.sinaimg.cn/large/007bNinYgy1g2iobmwmyaj30lz0cdmx9.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/20/第三章笔记-pandas入门和实战-pandas可视化/" rel="next" title="第三章笔记(pandas入门和实战)-pandas可视化">
+                <i class="fa fa-chevron-left"></i> 第三章笔记(pandas入门和实战)-pandas可视化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">不二码匠</p>
+              <p class="site-description motion-element" itemprop="description">捣鼓的码库</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、文本数据的读取与存储"><span class="nav-number">1.</span> <span class="nav-text">一、文本数据的读取与存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-CSV文件的读取"><span class="nav-number">1.1.</span> <span class="nav-text">(一) CSV文件的读取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-csv创建"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. csv创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-csv读取"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. csv读取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-csv规整"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. csv规整</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-指定列作为索引"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">(1) 指定列作为索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-标题行设置"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">(2)  标题行设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-自定义读取"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">(3) 自定义读取</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-跳过一些行"><span class="nav-number">1.1.3.3.1.</span> <span class="nav-text">a. 跳过一些行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-读取部分行"><span class="nav-number">1.1.3.3.2.</span> <span class="nav-text">b. 读取部分行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-逐块读取"><span class="nav-number">1.1.3.3.3.</span> <span class="nav-text">c. 逐块读取</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-TXT文件的读取"><span class="nav-number">1.2.</span> <span class="nav-text">(二) TXT文件的读取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-文本数据的存储"><span class="nav-number">1.3.</span> <span class="nav-text">(三) 文本数据的存储</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、JSON和Excel数据的读取和存储"><span class="nav-number">2.</span> <span class="nav-text">二、JSON和Excel数据的读取和存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-JSON数据的读取与存储"><span class="nav-number">2.1.</span> <span class="nav-text">(一) JSON数据的读取与存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-使用json读取"><span class="nav-number">2.1.1.</span> <span class="nav-text">1. 使用json读取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用pandas的read-json"><span class="nav-number">2.1.2.</span> <span class="nav-text">2. 使用pandas的read_json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-存储"><span class="nav-number">2.1.3.</span> <span class="nav-text">3. 存储</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-Excel数据的读取与存储"><span class="nav-number">2.2.</span> <span class="nav-text">(二) Excel数据的读取与存储</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不二码匠</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.6.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
